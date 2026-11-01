@@ -7,12 +7,16 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
+  <div class="app" id="app">
     <header class="app-header">
       <h1>Simple GPT Chat</h1>
     </header>
 
     <main id="chat" class="chat"></main>
+
+    <div id="drop-overlay" class="drop-overlay hidden">
+      <div class="drop-overlay-text">Drop file to attach</div>
+    </div>
 
     <form id="chat-form" class="composer">
       <div id="file-preview" class="file-preview hidden">

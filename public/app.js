@@ -1,3 +1,4 @@
+const appEl = document.getElementById('app');
 const chatEl = document.getElementById('chat');
 const formEl = document.getElementById('chat-form');
 const messageInput = document.getElementById('message-input');
@@ -6,8 +7,10 @@ const filePreview = document.getElementById('file-preview');
 const fileNameEl = document.getElementById('file-name');
 const removeFileBtn = document.getElementById('remove-file');
 const sendBtn = document.getElementById('send-btn');
+const dropOverlay = document.getElementById('drop-overlay');
 
 let selectedFile = null;
+let dragCounter = 0;
 
 renderEmptyState();
 
@@ -20,6 +23,35 @@ removeFileBtn.addEventListener('click', () => {
   selectedFile = null;
   fileInput.value = '';
   updateFilePreview();
+});
+
+appEl.addEventListener('dragenter', (e) => {
+  e.preventDefault();
+  if (!e.dataTransfer || !Array.from(e.dataTransfer.types || []).includes('Files')) return;
+  dragCounter++;
+  dropOverlay.classList.remove('hidden');
+});
+
+appEl.addEventListener('dragover', (e) => {
+  e.preventDefault();
+});
+
+appEl.addEventListener('dragleave', (e) => {
+  e.preventDefault();
+  dragCounter = Math.max(0, dragCounter - 1);
+  if (dragCounter === 0) dropOverlay.classList.add('hidden');
+});
+
+appEl.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dragCounter = 0;
+  dropOverlay.classList.add('hidden');
+
+  const files = e.dataTransfer?.files;
+  if (files && files.length > 0) {
+    selectedFile = files[0];
+    updateFilePreview();
+  }
 });
 
 messageInput.addEventListener('input', () => {
