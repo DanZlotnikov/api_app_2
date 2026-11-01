@@ -54,11 +54,12 @@ app.post('/api/chat', upload.single('file'), async (req, res) => {
       }
     }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://gateway.danzlotnikov.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${OPENAI_API_KEY}`,
+        "x-aicr-key": "aicr_live_SAtv9JN5zlMoVEUq42Yho7OMzXCUzLmx45ljLj",
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
