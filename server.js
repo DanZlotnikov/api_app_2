@@ -7,7 +7,6 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const AICR_GATEWAY_KEY = process.env.AICR_GATEWAY_KEY;
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -55,16 +54,11 @@ app.post('/api/chat', upload.single('file'), async (req, res) => {
       }
     }
 
-    const openaiUrl = AICR_GATEWAY_KEY
-      ? 'https://gateway.danzlotnikov.com/openai/v1/chat/completions'
-      : 'https://api.openai.com/v1/chat/completions';
-
-    const response = await fetch(openaiUrl, {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${OPENAI_API_KEY}`,
-        ...(AICR_GATEWAY_KEY ? { 'x-aicr-key': AICR_GATEWAY_KEY } : {}),
       },
       body: JSON.stringify({
         model: 'gpt-4o-mini',
